@@ -11,6 +11,8 @@
 #include <chain.h>
 #include <groove.h>
 #include <table.h>
+#include <cstring>
+
 
 void roll_left_by_one(char *str)
 {
