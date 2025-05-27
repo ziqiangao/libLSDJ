@@ -99,7 +99,7 @@ void print_chain(uint8_t value)
 
 std::unordered_set<int> usedsynths = {};
 std::unordered_set<int> usedwaves = {};
-std::unordered_set<int> kitinstruments = {};
+std::unordered_set<int> usedtables = {};
 
 int main(int argc, char *argv[])
 {
@@ -175,8 +175,10 @@ int main(int argc, char *argv[])
                 printf("    CMD/Rate: %i\n", lsdj_instrument_get_command_rate(song, i));
                 if (lsdj_instrument_is_table_enabled(song, i))
                 {
+                    int t = lsdj_instrument_get_table(song, i);
                     printf("    Table Mode: %i\n", lsdj_instrument_get_table_mode(song, i));
-                    printf("    Table: %X\n", lsdj_instrument_get_table(song, i));
+                    printf("    Table: %X\n", t);
+                    usedtables.insert(t);
                 }
                 printf("    PU2 Transpose: %d\n", (int8_t)lsdj_instrument_pulse_get_pulse2_tune(song, i));
                 printf("    Finetune: %X\n", lsdj_instrument_pulse_get_finetune(song, i));
@@ -189,8 +191,10 @@ int main(int argc, char *argv[])
                 printf("    CMD/Rate: %i\n", lsdj_instrument_get_command_rate(song, i));
                 if (lsdj_instrument_is_table_enabled(song, i))
                 {
+                    int t = lsdj_instrument_get_table(song, i);
                     printf("    Table Mode: %i\n", lsdj_instrument_get_table_mode(song, i));
-                    printf("    Table: %X\n", lsdj_instrument_get_table(song, i));
+                    printf("    Table: %X\n", t);
+                    usedtables.insert(t);
                 }
                 playmode = lsdj_instrument_wave_get_play_mode(song, i);
                 printf("    Play Mode: %i\n", playmode);
@@ -210,15 +214,16 @@ int main(int argc, char *argv[])
                 }
                 break;
             case LSDJ_INSTRUMENT_TYPE_KIT:
-                kitinstruments.insert(i);
                 printf("    Volume: %i\n", lsdj_instrument_wave_get_volume(song, i));
                 printf("    Output: %s%s\n", panning & 1 ? "L" : "", panning & 2 ? "R" : "");
                 printf("    Vibrato: %i, %i, %i\n", lsdj_instrument_get_plv_speed(song, i), lsdj_instrument_get_vibrato_shape(song, i), lsdj_instrument_get_vibrato_direction(song, i));
                 printf("    Pitch: %d\n", (int8_t)lsdj_instrument_kit_get_pitch(song, i));
                 if (lsdj_instrument_is_table_enabled(song, i))
                 {
+                    int t = lsdj_instrument_get_table(song, i);
                     printf("    Table Mode: %i\n", lsdj_instrument_get_table_mode(song, i));
-                    printf("    Table: %X\n", lsdj_instrument_get_table(song, i));
+                    printf("    Table: %X\n", t);
+                    usedtables.insert(t);
                 }
                 printf("    Kit: %X/%X\n", lsdj_instrument_kit_get_kit1(song, i), lsdj_instrument_kit_get_kit2(song, i));
                 printf("    Offset: %X/%X\n", lsdj_instrument_kit_get_offset1(song, i), lsdj_instrument_kit_get_offset2(song, i));
@@ -236,8 +241,10 @@ int main(int argc, char *argv[])
                 printf("    CMD/Rate: %i\n", lsdj_instrument_get_command_rate(song, i));
                 if (lsdj_instrument_is_table_enabled(song, i))
                 {
+                    int t = lsdj_instrument_get_table(song, i);
                     printf("    Table Mode: %i\n", lsdj_instrument_get_table_mode(song, i));
-                    printf("    Table: %X\n", lsdj_instrument_get_table(song, i));
+                    printf("    Table: %X\n", t);
+                    usedtables.insert(t);
                 }
                 printf("    Transpose: %s\n", lsdj_instrument_get_transpose(song, i) ? "Yes" : "No");
                 break;
@@ -416,10 +423,10 @@ int main(int argc, char *argv[])
     }
 
 
-    if (lsdj_table_is_allocated(song, 0)) printf("\nTables:\n");
+    if (!usedtables.empty()) printf("\nTables:\n");
     for (int i = 0; i < LSDJ_TABLE_COUNT; i++)
     {
-        if (lsdj_table_is_allocated(song, i))
+        if (usedtables.count(i))
         {
             printf("  Table %02X:\n", i);
             for (int j = 0; j < LSDJ_TABLE_COUNT; j++)
@@ -430,7 +437,7 @@ int main(int argc, char *argv[])
                 printf("%02X|",lsdj_table_get_transposition(song,i,j));
 
                 auto command1 = lsdj_table_get_command1(song,i,j);
-                auto command2 = lsdj_table_get_command1(song,i,j);
+                auto command2 = lsdj_table_get_command2(song,i,j);
                 if (command1 == LSDJ_COMMAND_NONE)
                     printf("---|");
                 else
