@@ -208,6 +208,9 @@ int main(int argc, char *argv[])
                 {
                     auto used = lsdj_instrument_wave_get_synth(song, i);
                     usedsynths.insert(used);
+                    for (uint8_t k = 0;k<16;k++) {
+                        usedwaves.insert((used<<4)+k);
+                    }
                     printf("    Synth: %i\n", used);
                     printf("    Speed: %i\n", lsdj_instrument_wave_get_speed(song, i));
                     printf("    Length: %i\n", lsdj_instrument_wave_get_length(song, i));
@@ -298,11 +301,11 @@ int main(int argc, char *argv[])
     if (!usedwaves.empty())
         printf("\nWaves:\n");
 
-    for (int i = 0; i < LSDJ_SYNTH_COUNT; i++)
+    for (int i = 0; i < LSDJ_WAVE_COUNT; i++)
     {
         if (usedwaves.count(i))
         {
-            printf("  Wave %X:\n    ", i);
+            printf("  Wave %02X:\n    ", i);
 
             uint8_t *data = lsdj_wave_get_bytes(song, i);
 
@@ -363,7 +366,7 @@ int main(int argc, char *argv[])
         if (lsdj_chain_is_allocated(song, i))
         {
             printf("  Chain %02X:\n", i);
-            for (int j = 0; j < LSDJ_CHAIN_COUNT; j++)
+            for (int j = 0; j < LSDJ_CHAIN_LENGTH; j++)
             {
                 printf("    ");
                 auto phrase = lsdj_chain_get_phrase(song, i, j);
@@ -409,7 +412,7 @@ int main(int argc, char *argv[])
         if (lsdj_groove_get_step(song,i,0) != 6 && lsdj_groove_get_step(song,i,1) != 6)
         {
             printf("  Groove %02X:\n", i);
-            for (int j = 0; j < LSDJ_CHAIN_COUNT; j++)
+            for (int j = 0; j < LSDJ_GROOVE_LENGTH; j++)
             {
                 printf("    ");
                 auto groove = lsdj_groove_get_step(song, i, j);
@@ -429,7 +432,7 @@ int main(int argc, char *argv[])
         if (usedtables.count(i))
         {
             printf("  Table %02X:\n", i);
-            for (int j = 0; j < LSDJ_TABLE_COUNT; j++)
+            for (int j = 0; j < LSDJ_TABLE_LENGTH; j++)
             {
                 printf("    ");
 
