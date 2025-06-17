@@ -419,7 +419,7 @@ int main(int argc, char *argv[])
                 if (groove == LSDJ_GROOVE_NO_VALUE)
                     break;
                 else
-                    printf("%02X", groove);
+                    printf("%02X\n", groove);
             }
             printf("\n");
         }
