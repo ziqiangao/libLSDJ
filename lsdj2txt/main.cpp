@@ -64,7 +64,7 @@ const char *allophones[] = {
 
 const char *commands[] = {
     "-", // LSDJ_COMMAND_NONE = 0
-    "A", // LSDJ_COMMAND_A
+    "B", // LSDJ_COMMAND_A
     "C", // LSDJ_COMMAND_C
     "D", // LSDJ_COMMAND_D
     "E", // LSDJ_COMMAND_E
@@ -86,7 +86,7 @@ const char *commands[] = {
     "X", // LSDJ_COMMAND_ARDUINO_BOY_X
     "Q", // LSDJ_COMMAND_ARDUINO_BOY_Q
     "Y", // LSDJ_COMMAND_ARDUINO_BOY_Y
-    "B"  // LSDJ_COMMAND_B (added in 7.1.0)
+    "A"  // LSDJ_COMMAND_B (added in 7.1.0)
 };
 
 void print_chain(uint8_t value)
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     {
         if (lsdj_instrument_is_allocated(song, i))
         {
-            printf("\n  Instrument #%X \"%s\":\n", i, lsdj_instrument_get_name(song, i));
+            printf("\n  Instrument #%02X \"%s\":\n", i, lsdj_instrument_get_name(song, i));
             auto type = lsdj_instrument_get_type(song, i);
             printf("    Type: %s\n", typenumtostring(type));
             auto panning = lsdj_instrument_get_panning(song, i);
