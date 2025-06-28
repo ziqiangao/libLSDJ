@@ -257,25 +257,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (lsdj_instrument_is_allocated(song, 0x40))
-    {
-        printf("\nSpeech:\n");
-        for (int i = 0; i < LSDJ_SPEECH_WORD_COUNT; i++)
-        {
-            if (lsdj_speech_get_word_allophone(song, i, 1) != LSDJ_SPEECH_WORD_NO_ALLOPHONE_VALUE)
-            {
-                printf("  Word %.3s:\n", lsdj_speech_get_word_name(song, i) - i);
-                int j = 0;
-                while (true)
-                {
-                    if (lsdj_speech_get_word_allophone(song, i, j) == LSDJ_SPEECH_WORD_NO_ALLOPHONE_VALUE)
-                        break;
-                    printf("    %X|%s|%02X\n", j >> 1, allophones[(lsdj_speech_get_word_allophone(song, i, j)) - 1], lsdj_speech_get_word_allophone(song, i, j + 1));
-                    j += 2;
-                }
-            }
-        }
-    }
+    
 
     if (!usedsynths.empty())
         printf("\nSynths:\n");
@@ -330,7 +312,7 @@ int main(int argc, char *argv[])
             printf("%s\n\n", waveStr);
         }
     }
-
+    bool speechused = false;
     printf("\nPhrases:\n");
     for (int i = 0; i < LSDJ_PHRASE_COUNT; i++)
     {
@@ -350,6 +332,7 @@ int main(int argc, char *argv[])
                 if (instrument == LSDJ_PHRASE_NO_INSTRUMENT)
                     printf("--|");
                 else
+                    if (instrument == 0x40) speechused = true;
                     printf("%02X|", instrument);
                 if (command == LSDJ_COMMAND_NONE)
                     printf("---\n");
@@ -451,6 +434,27 @@ int main(int argc, char *argv[])
                     printf("%s%02X\n", commands[command2], lsdj_table_get_command2_value(song, i, j));
             }
             printf("\n");
+        }
+    }
+
+
+    if (lsdj_instrument_is_allocated(song, 0x40) || speechused)
+    {
+        printf("\nSpeech:\n");
+        for (int i = 0; i < LSDJ_SPEECH_WORD_COUNT; i++)
+        {
+            if (lsdj_speech_get_word_allophone(song, i, 1) != LSDJ_SPEECH_WORD_NO_ALLOPHONE_VALUE)
+            {
+                printf("  Word %.3s:\n", lsdj_speech_get_word_name(song, i) - i);
+                int j = 0;
+                while (true)
+                {
+                    if (lsdj_speech_get_word_allophone(song, i, j) == LSDJ_SPEECH_WORD_NO_ALLOPHONE_VALUE)
+                        break;
+                    printf("    %X|%s|%02X\n", j >> 1, allophones[(lsdj_speech_get_word_allophone(song, i, j)) - 1], lsdj_speech_get_word_allophone(song, i, j + 1));
+                    j += 2;
+                }
+            }
         }
     }
 
