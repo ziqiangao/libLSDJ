@@ -325,6 +325,7 @@ int main(int argc, char *argv[])
                 auto note = lsdj_phrase_get_note(song, i, j);
                 auto instrument = lsdj_phrase_get_instrument(song, i, j);
                 auto command = lsdj_phrase_get_command(song, i, j);
+                if (instrument == 0x40) speechused = true;
                 if (note == LSDJ_PHRASE_NO_NOTE)
                     printf("--|");
                 else
@@ -332,7 +333,7 @@ int main(int argc, char *argv[])
                 if (instrument == LSDJ_PHRASE_NO_INSTRUMENT)
                     printf("--|");
                 else
-                    if (instrument == 0x40) speechused = true;
+                    
                     printf("%02X|", instrument);
                 if (command == LSDJ_COMMAND_NONE)
                     printf("---\n");
