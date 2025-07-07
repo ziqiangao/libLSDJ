@@ -214,6 +214,7 @@ int main(int argc, char *argv[])
                     printf("    Synth: %i\n", used);
                     printf("    Speed: %i\n", lsdj_instrument_wave_get_speed(song, i));
                     printf("    Length: %i\n", lsdj_instrument_wave_get_length(song, i));
+                    if (playmode != LSDJ_INSTRUMENT_WAVE_PLAY_ONCE) printf("    LoopPos: %i\n", lsdj_instrument_wave_get_loop_pos(song,i));
                 }
                 break;
             case LSDJ_INSTRUMENT_TYPE_KIT:
