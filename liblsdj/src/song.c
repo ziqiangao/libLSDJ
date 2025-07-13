@@ -96,6 +96,13 @@ unsigned short lsdj_song_get_tempo(const lsdj_song_t* song)
         return byte;
 }
 
+lsdj_highspeed_mode_t lsdj_song_get_fast(const lsdj_song_t* song)
+{
+	const uint8_t byte = song->bytes[TEMPO_OFFSET+1];
+    
+    return byte;
+}
+
 void lsdj_song_set_transposition(lsdj_song_t* song, uint8_t semitones)
 {
 	song->bytes[TRANSPOSITION_OFFSET] = semitones;

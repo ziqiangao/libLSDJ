@@ -139,13 +139,14 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("Project name: <Unnamed>\n");
+        printf("Project name: ");
     }
 
     auto song = lsdj_project_get_song(project);
 
     printf("Version: %i\n", lsdj_project_get_version(project));
     printf("Tempo: %i\n", lsdj_song_get_tempo(song));
+    printf("Highspeed Mode %i\n", lsdj_song_get_fast(song));
     printf("Clone Mode: %s\n", lsdj_song_get_clone_mode(song) ? "SLIM" : "DEEP");
     printf("Transpose: %d\n", (int8_t)lsdj_song_get_transposition(song));
     printf("Font: %i\n", lsdj_song_get_font(song));

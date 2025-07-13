@@ -76,6 +76,15 @@ typedef enum
    LSDJ_CLONE_SLIM = 1
 } lsdj_clone_mode_t;
 
+//! High speed tempo multiplier
+typedef enum
+{
+   LSDJ_HIGH_SPEED_NONE = 0,
+   LSDJ_HIGH_SPEED_2X = 0,
+   LSDJ_HIGH_SPEED_3X = 0,
+   LSDJ_HIGH_SPEED_6X = 0,
+} lsdj_highspeed_mode_t;
+
 //! The different sync modes that LSDj supports
 typedef enum
 {
@@ -121,6 +130,10 @@ bool lsdj_song_set_tempo(lsdj_song_t* song, unsigned short bpm);
 //! Retrieve the tempo of a song, in beats-per-minute
 /*! @return The tempo, ranging from 40 to 295 */
 unsigned short lsdj_song_get_tempo(const lsdj_song_t* song);
+
+//! Retrieve the high-speed tempo value
+/*! @return The high-speed value from 0-3 */
+lsdj_highspeed_mode_t lsdj_song_get_fast(const lsdj_song_t* song);
 
 //! Change the global transposition of a song
 /*! The value given is in semitones. 0 or higher maps to a positive increase, 0xFF or lower to a negative one */
