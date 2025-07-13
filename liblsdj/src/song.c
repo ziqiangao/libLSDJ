@@ -96,9 +96,9 @@ unsigned short lsdj_song_get_tempo(const lsdj_song_t* song)
         return byte;
 }
 
-lsdj_highspeed_mode_t lsdj_song_get_fast(const lsdj_song_t* song)
+lsdj_highspeed_mode_t lsdj_song_get_fastmode(const lsdj_song_t* song)
 {
-	const uint8_t byte = song->bytes[TEMPO_OFFSET+1];
+	const uint8_t byte = song->bytes[0x3FCC];
     
     return byte;
 }
